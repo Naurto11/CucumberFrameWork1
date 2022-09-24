@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import org.Base.BaseClass;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.pojo.LoginPojo;
 
@@ -12,6 +14,9 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class StepDefinationClass extends BaseClass {
+	
+	public static JavascriptExecutor js;
+	
 	@Given("user has to chrome browser and pass the url")
 	public void user_has_to_chrome_browser_and_pass_the_url() throws InterruptedException {
 
@@ -59,7 +64,7 @@ public class StepDefinationClass extends BaseClass {
 					btnClick(login.getCkMasterBtn());
 					Thread.sleep(2000);
 					btnClick(login.getMarketPage());
-					Thread.sleep(2000);
+					Thread.sleep(1000);
 					driver.findElement(By.xpath("//*[@class='fa fa-plus']")).click();
 					Thread.sleep(2000);
 
@@ -88,8 +93,9 @@ public class StepDefinationClass extends BaseClass {
 					toInput(login.getSortorder(), excelReadGeneral(m, 6));
 //						
 						btnClick(login.getSaveAndClse());
-						Thread.sleep(1000);
-						driver.findElement(By.xpath("//button[text()='OK']")).click();
+						Thread.sleep(2000);
+						WebElement dialogebtn = driver.findElement(By.xpath("//button[text()='OK']"));
+						js.executeScript("arguments[0].click()", dialogebtn);
 						
 						Thread.sleep(1000);
 					
@@ -106,7 +112,11 @@ public class StepDefinationClass extends BaseClass {
 				System.out.println("Invalid");
 			}
 			Thread.sleep(1000);
-			driver.findElement(By.xpath("//button[text()='OK']")).click();
+			WebElement loginBtn = driver.findElement(By.xpath("//button[text()='OK']"));
+			
+			 js = (JavascriptExecutor) driver;
+			js.executeScript("arguments[0].click()", loginBtn);
+			Thread.sleep(1000);
 			
 
 		}
@@ -119,5 +129,8 @@ public class StepDefinationClass extends BaseClass {
 
 	@Then("user has to navigate the error page")
 	public void user_has_to_navigate_the_error_page() {
+		
+		printTitle();
+		printUrl();
 	}
 }
